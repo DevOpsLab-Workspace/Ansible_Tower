@@ -1,0 +1,15 @@
+---
+- name: Checking OS
+  include: checkos.yml
+
+- name: Collecting Details
+  include: SpaceCheck.yml
+
+- name: Performing Patching Cycle
+  include: patch.yml
+
+- name: Performing Reboot
+  include: reboot.yml
+
+- name: Performing Reboot
+  include: email.yml

@@ -1,0 +1,40 @@
+---
+  - name: Checking the Kernel Update Status
+    shell: |
+      LAST_KERNEL=$(rpm -qa --last kernel | perl -pe 's/^kernel-(\S+).*/$1/' | head -n1)
+      CURRENT_KERNEL=$(uname -r)
+      AVAILABLE_KERNEL=$(yum check-update | grep -i kernel.x86_64 | awk '{print $2}')
+      yum check-update | grep -i kernel.x86_64 > /dev/null 2>&1
+      if [[ $? == 0 ]]; then
+      echo "New_Kernel_Available"
+      elif [[ $LAST_KERNEL = $CURRENT_KERNEL ]]; then
+      echo "Latest_Kernel"
+      else
+      echo "Reboot_Required"
+      fi
+    register: kernel_status
+    no_log: false
+  - debug: var=kernel_status.stdout  
+
+  - name: Check for Available Update
+    shell: |
+      yum check-update --quiet | grep -v "^$" | wc -l
+    register: update_status
+    no_log: false
+  - debug: var=update_status.stdout  
+
+  - name: Performing Upgrade on Linux Servers
+    yum:
+      name: '*'
+      state: latest
+      update_cache: true
+    register: yum_success_update  
+    when: update_status.stdout | length > 0 and patch_needed | default('Yes') == "Yes"
+
+  - debug:
+      msg: 
+      - "Hostame : {{ inventory_hostname }}"
+      - "Kernel Version : {{ ansible_kernel }}"
+      - "Kernel Status : {{ kernel_status.stdout }}"
+      - "Patch Count : {{ update_status.stdout }}"
+...

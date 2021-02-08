@@ -1,0 +1,22 @@
+---
+- name: Constructing Email
+  template:
+     src: body.j2
+     dest: ./body.txt
+  delegate_to: localhost
+  become: false
+
+- name: Sending an e-mail using Gmail SMTP servers
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: devopslabs020@gmail.com
+    password: P@ssword4U@06#
+    from: "{{ from }}"
+    to: "{{ to }}"
+    headers: "Content-type=text/html"
+    subtype: "html"
+    subject: "{{ sub }}"
+    body: "{{ lookup('file', './body.txt') }}"
+  delegate_to: localhost
+  become: false

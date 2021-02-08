@@ -1,0 +1,26 @@
+<br>
+<table broder=1 cellpadding=5 cellspacing=1 align=center width=50%>
+<tr bgcolor=BLACK>
+<td width=50% align=center><font color=WHITE><b>Pre Patching Checks for VM and Physical Servers</b></font></td>
+</tr>
+</table>
+
+<table broder=1 cellpadding=5 cellspacing=1 align=center width=50%>
+<tr>
+<td width=45%><b>Hostname</b></td>
+<td width=45%><b>Pre-Checks - Kernel Version</b></td>
+<td width=45%><b>Pre-Checks - No. of Patches Available</b></td>
+<td width=45%><b>Rebooted</b></td>
+<td width=45%><b>Post-Checks - Kernel Version</b></td>
+<td width=45%><b>Post-Checks - Uptime</b></td>
+</tr>
+
+<tr>
+<td width=55%>{{ ansible_hostname }}</td>
+<td width=55%>{{ ansible_kernel }}</td>
+<td width=55%>{{ update_status.stdout }}</td>
+<td width=55%>Yes</td>
+<td width=55%>{{ ansible_kernel }}</td>
+<td width=55%>{{ ansible_uptime_seconds }}</td>
+</tr>
+</table>

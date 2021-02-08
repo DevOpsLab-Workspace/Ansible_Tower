@@ -1,0 +1,7 @@
+- name: 'Ensure That Free Space on Var is Grater than 20%'
+  assert:
+     that: item.size_available > item.size_total|float * 0.19
+     msg: 'Disk Space has Reached 70% Threshold'
+  when: "'{{ item.mount }}' == '/boot'"
+  with_items: '{{ ansible_mounts }}'
+  register: freespcinfo

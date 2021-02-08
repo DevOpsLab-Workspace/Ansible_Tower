@@ -1,0 +1,3 @@
+- fail:
+    msg: "Its not Red Hat Enterprise Linux Server"
+  when: ansible_facts['os_family'] == "Windows"  
